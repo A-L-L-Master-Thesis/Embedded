@@ -8,9 +8,9 @@ class Communication():
     @staticmethod   
     def register(drone: Drone):
         data = json.dumps(drone, cls=DroneEncoder)
-        print('drone_info', data)
+        # print('drone_info', data)
         response = requests.post(Communication.endpoint, data)
-        print('response_info', response.text)
+        # print('response_info', response.text)
     
     def update():
         pass

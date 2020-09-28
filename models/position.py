@@ -1,7 +1,8 @@
 from json import JSONEncoder
 
 class Position():
-    def __init__(self, latitude, longitude):
+    def __init__(self, altitude, latitude, longitude):
+        self.altitude = altitude
         self.latitude = latitude
         self.longitude = longitude
         

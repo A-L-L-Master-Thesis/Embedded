@@ -18,10 +18,9 @@ class Drone():
 
     def update(self):
         self.lastUpdate = datetime.now().isoformat()
-        self.altitude = 22
-        self.position = Position(1, 2)
+        self.position = Position(22, 1, 2)
         self.battery = 33
-
+        self.status = StatusEnum.CHARGING.value
 class DroneEncoder(JSONEncoder):
         def default(self, o):
             return o.__dict__
