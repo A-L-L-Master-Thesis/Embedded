@@ -1,16 +1,19 @@
 import requests
 import json
-from models.drone import Drone, DroneEncoder
+from .drone import Drone
+from encoders import Encoder
+from datetime import datetime
 
 class Communication():
-    endpoint = 'https://5f71932464a3720016e60933.mockapi.io/api/v1/drone'
+    def __init__(self):
+        self.endpoint = 'https://localhost:44310/api/drones'
+        self.headers = {'Content-type': 'application/json', 'Accept': '*/*'}
     
-    @staticmethod   
-    def register(drone: Drone):
-        data = json.dumps(drone, cls=DroneEncoder)
-        # print('drone_info', data)
-        response = requests.post(Communication.endpoint, data)
-        # print('response_info', response.text)
+    def register(self, drone: Drone):
+        data = json.dumps(drone, cls=Encoder)
+        print(data)
+        response = requests.post(self.endpoint, data=data, headers=self.headers, verify=False)
+        print(response)
     
-    def update():
+    def update(self):
         pass

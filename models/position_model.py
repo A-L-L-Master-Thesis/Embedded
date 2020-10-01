@@ -1,11 +1,8 @@
-from json import JSONEncoder
-
-class Position():
+class PositionModel():
     def __init__(self, altitude, latitude, longitude):
         self.altitude = altitude
         self.latitude = latitude
         self.longitude = longitude
-        
-class PositionEncoder(JSONEncoder):
-        def default(self, o):
-            return o.__dict__
+
+    def __str__(self):
+        return f'altitude: {self.altitude}, lat: {self.latitude} long: {self.longitude}'

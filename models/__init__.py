@@ -1,2 +1,1 @@
-from .drone import *
-from .position import *
+from .position_model import *
