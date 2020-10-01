@@ -1,15 +1,17 @@
 import os
 import uuid
 import socket
-from app import Communication, Drone
+from app import Communication, Drone, flask
 from handlers import write, read
-
+from _version import __version__
 
 class System():
     def __init__(self):
-        self.communication = Communication()
+        print(f'DroneOS version {__version__}')
+        # self.communication = Communication()
         self.drone = self.initialize()
-        self.register_drone()
+        flask(self.drone)
+        # self.register_drone()
 
     def initialize(self):
         uuid_file = os.path.join(os.getcwd(), 'drone_info.json')

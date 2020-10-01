@@ -7,7 +7,6 @@ from commands import ControlCommands, ReadCommands, SetCommands
 from models import PositionModel
 from datetime import datetime
 from enums import StatusEnum
-from _version import __version__
 
 class Drone():
     def __init__(self, uuid):
@@ -95,7 +94,6 @@ class Drone():
                 print(f'Caught exception socket.error : {error}')
                 
     def print_info(self):
-        print(f'DroneOS version {__version__}')
         print(f'Local ip: {socket.gethostbyname(socket.gethostname())}')
         print(f'Last update: {self.lastUpdate}')
         print(f'UUID: {self.uuid}')

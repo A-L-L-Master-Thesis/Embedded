@@ -2,7 +2,6 @@ import requests
 import json
 from .drone import Drone
 from encoders import Encoder
-from datetime import datetime
 
 class Communication():
     def __init__(self):
