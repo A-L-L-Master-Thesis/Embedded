@@ -1,11 +1,9 @@
 from exceptions import NoConnectionError
 import socket
-import os
 import threading
 import time
-from .stats import Stats
 from commands import ControlCommands, ReadCommands, SetCommands
-from models import PositionModel
+from models import PositionModel, StatsModel
 from datetime import datetime
 from enums import StatusEnum
 
@@ -61,7 +59,7 @@ class Drone():
         def _time_difference(start):
             return time.time() - start
         
-        self.log.append(Stats(command, len(self.log)))
+        self.log.append(StatsModel(command, len(self.log)))
         self.socket.sendto(command.encode('utf-8'), ('192.168.10.1', 8889))
         
         start = time.time()

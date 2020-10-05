@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class Stats:
+class StatsModel:
     def __init__(self, command, id):
         self.command = command
         self.response = None
