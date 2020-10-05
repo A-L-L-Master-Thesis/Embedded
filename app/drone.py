@@ -13,8 +13,6 @@ class Drone():
     def __init__(self, uuid):
         self.uuid = uuid
         
-        return
-                
         self.control = ControlCommands(self.send_command)
         self.read = ReadCommands(self.send_command)
         self.set = SetCommands(self.send_command)
@@ -93,3 +91,4 @@ class Drone():
         print(f'Position: {self.position}')
         print(f'Battery: {self.battery}%')
         print(f'Status: {StatusEnum.format(self.status)}')
+        
