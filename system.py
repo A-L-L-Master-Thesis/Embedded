@@ -1,17 +1,20 @@
 import os
 import uuid
-import socket
-from app import Communication, Drone, flask
+from app import Drone
 from handlers import write, read
 from _version import __version__
+from communication import Client
+from exceptions import NoConnectionError
 
 class System():
     def __init__(self):
-        print(f'DroneOS version {__version__}')
-        # self.communication = Communication()
-        self.drone = self.initialize()
-        flask(self.drone)
-        # self.register_drone()
+        try:
+            print(f'DroneOS version {__version__}')
+            self.drone = self.initialize()
+            self.client = Client('127.0.0.1', 65432, self.drone.uuid)
+            self.register_drone()
+        except NoConnectionError:
+            print('No connection to drone')
 
     def initialize(self):
         uuid_file = os.path.join(os.getcwd(), 'drone_info.json')
@@ -22,9 +25,7 @@ class System():
             return read(uuid_file, Drone)
         
     def register_drone(self):
-        self.communication.register(self.drone)
-        print("Drone registered with backend")
-
+        self.client.send('register')
 
 if __name__ == "__main__":
     s = System()

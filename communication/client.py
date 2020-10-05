@@ -1,8 +1,6 @@
-import socket
-import time
 import json
-from message import Message
-
+import socket
+from .message import Message
 
 class Client():
     def __init__(self, host, port, uuid):

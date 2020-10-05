@@ -60,6 +60,7 @@ class Server():
             msg = Message(**json.loads(msg))
             
             if msg.message:
+                print(msg.message)
                 pass
             
             self.send_ack(client, msg.sender)
