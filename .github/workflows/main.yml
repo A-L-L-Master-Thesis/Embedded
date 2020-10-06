@@ -19,6 +19,11 @@ jobs:
         uses: andstor/file-existence-action@v1
         with:
           files: "CHANGELOG.md"
+          
+      - name: Setup Git
+        run: |
+          git config --global user.email "${{ github.actor }}@local"
+          git config --global user.name "${{ github.actor }}"
 
       - name: Bump Version
         if: steps.ch_check.outputs.files_exists == 'true'
