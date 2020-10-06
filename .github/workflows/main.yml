@@ -1,0 +1,29 @@
+name: ChangeLog Generation
+
+on:
+  push:
+    branches: [ CI-test ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Standart-version
+        run: npm i -g standard-version
+
+      - name: Check if changelog exist
+        id: ch_check
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "CHANGELOG.md"
+
+      - name: Bump Version
+        if: steps.ch_check.outputs.files_exists == 'true'
+        run: standard-version
+      
+      - name: Init Version
+        if: steps.ch_check.outputs.files_exists == 'false'
+        run: standard-version --first-release
