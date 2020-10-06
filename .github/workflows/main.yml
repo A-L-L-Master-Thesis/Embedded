@@ -10,6 +10,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Install Standart-version
         run: sudo npm i -g standard-version
@@ -33,9 +36,10 @@ jobs:
         if: steps.ch_check.outputs.files_exists == 'false'
         run: standard-version --first-release
     
-      - name: Git Push Action
-        uses: x-actions/git-push@v1
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          GITHUB_EMAIL: ${{ github.actor }}@localhost
-          GITHUB_USERNAME: ${{ github.actor }}
-          PUBLISH_BRANCH: ${{ github.base_ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop # ${{ github.base_ref }}
+          tags: true
+        
