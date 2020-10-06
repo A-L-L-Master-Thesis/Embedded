@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/HCI901E20/P9-Embedded/compare/v1.0.0...v1.0.1) (2020-10-06)
+
+
+### Bug Fixes
+
+* **CD:** New git credentials for actions ([5fa575e](https://github.com/HCI901E20/P9-Embedded/commit/5fa575ed20dd4c1fa9465e14b223d634b8674398))
+
 ## 1.0.0 (2020-10-06)
 
 
