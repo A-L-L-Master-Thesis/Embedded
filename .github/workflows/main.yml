@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install Standart-version
-        run: npm i -g standard-version
+        run: sudo npm i -g standard-version
 
       - name: Check if changelog exist
         id: ch_check
