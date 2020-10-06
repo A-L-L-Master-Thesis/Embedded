@@ -1,8 +1,11 @@
 name: ChangeLog Generation
 
-on:
-  push:
-    branches: [ develop, master ]
+on: 
+  pull_request:
+    types: closed
+    branches: 
+      - master
+      - develop
 
 jobs:
   generate:
