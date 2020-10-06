@@ -2,7 +2,7 @@ name: ChangeLog Generation
 
 on:
   push:
-    branches: [ CI-test ]
+    branches: [ develop, master ]
 
 jobs:
   generate:
@@ -27,3 +27,10 @@ jobs:
       - name: Init Version
         if: steps.ch_check.outputs.files_exists == 'false'
         run: standard-version --first-release
+    
+      - name: Git Push Action
+        uses: x-actions/git-push@v1
+        with:
+          GITHUB_EMAIL: ${{ github.actor }}@localhost
+          GITHUB_USERNAME: ${{ github.actor }}
+          PUBLISH_BRANCH: ${{ github.base_ref }}
