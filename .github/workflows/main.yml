@@ -31,8 +31,12 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: Bump Version
-        if: steps.ch_check.outputs.files_exists == 'true'
+      - name: Bump Version Dev
+        if: steps.ch_check.outputs.files_exists == 'true' && ${{ github.base_ref }} == "develop"
+        run: standard-version --prerelease dev
+      
+      - name: Bump Version Master
+        if: steps.ch_check.outputs.files_exists == 'true' && ${{ github.base_ref }} == "master"
         run: standard-version
       
       - name: Init Version
@@ -43,6 +47,6 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: develop # ${{ github.base_ref }}
+          branch: ${{ github.base_ref }}
           tags: true
         
