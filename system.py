@@ -2,14 +2,14 @@ import os
 import uuid
 from app import Drone
 from handlers import write, read
-from _version import __version__
 from communication import Client
 from exceptions import NoConnectionError
+from models import Version
 
 class System():
     def __init__(self):
         try:
-            print(f'DroneOS version {__version__}')
+            print(f'DroneOS version {read("version.json", Version).version}')
             self.drone = self.initialize()
             self.client = Client('127.0.0.1', 65432, self.drone.uuid)
             self.register_drone()
