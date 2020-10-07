@@ -1,4 +1,5 @@
 import json
+import struct
 from json import JSONEncoder
 
 
@@ -14,4 +15,8 @@ class Message():
         self.target = target
 
     def to_bytes(self):
-        return json.dumps(self, cls=Encoder).encode('utf-8')
+        data = json.dumps(self, cls=Encoder)
+        return f'{data}\n'.encode('utf-8')
+    
+    def __str__(self) -> str:
+        return self.message

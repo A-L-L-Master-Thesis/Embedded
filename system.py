@@ -11,8 +11,12 @@ class System():
         try:
             print(f'DroneOS version {__version__}')
             self.drone = self.initialize()
-            self.client = Client('127.0.0.1', 65432, self.drone.uuid)
+            self.client = Client('localhost', 44444, self.drone)
             self.register_drone()
+            
+            # Keeps connection alive
+            while True:
+                pass
         except NoConnectionError:
             print('No connection to drone')
 

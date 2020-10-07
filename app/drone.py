@@ -9,11 +9,14 @@ from enums import StatusEnum
 
 class Drone():
     def __init__(self, uuid):
+        self.log = []
         self.uuid = uuid
         
         self.control = ControlCommands(self.send_command)
         self.read = ReadCommands(self.send_command)
         self.set = SetCommands(self.send_command)
+        
+        self.commands = self.commands()
         
         self.connect()
         self.activate()
@@ -21,14 +24,25 @@ class Drone():
         self.update()
         self.print_info()
         
+    def commands(self):
+         return {
+            'update': self.update,
+            'read': self.read.battery
+        }
+        
+    def command_execute(self, command):
+        if command in self.commands:
+            self.commands[command]()
+            return True
+        return False
+        
     def update(self):
         self.lastUpdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.position = PositionModel(22, 1, 2)
-        self.battery = self.read.battery()
-        self.status = self.drone_status()
+        # self.position = PositionModel(22, 1, 2)
+        # self.battery = self.read.battery()
+        # self.status = self.drone_status()
         
     def drone_status(self):
-        # Implement logic to figure out status
         return StatusEnum.CHARGING.value
     
     def connect(self):
@@ -41,7 +55,6 @@ class Drone():
         self.receive_thread.daemon = True
         self.receive_thread.start()
 
-        self.log = []
 
         self.MAX_TIME_OUT = 15.0
         

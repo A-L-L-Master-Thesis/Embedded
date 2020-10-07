@@ -1,66 +1,88 @@
 import json
 import socket
+import threading
 from .message import Message
 
 class Client():
-    def __init__(self, host, port, uuid):
-        self.uuid = uuid
-        self.connect(host, port)
+    def __init__(self, host, port, drone):
+        self.drone = drone
+        self.address = (host, port)
+        self.start(host, port)
+        self.listen()
 
-    def connect(self, host, port):
+    def start(self, host, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
         self.socket.connect((host, port))
-        self.send('')
+        self.send('hey alec')
         
+    def listen(self):
+        receive_thread = threading.Thread(target=self.on_new_client, args=(self.socket, self.address))
+        receive_thread.daemon = True
+        receive_thread.start()
+        
+    def on_new_client(self, client, address):
+        print('Server connection opened:', self.address)
+        
+        self.listen_client(client, address)
+            
+        print('Server connection closed', address)
+            
     def send(self, msg):
-        msg = Message(self.uuid, message=msg)
-        data = msg.to_bytes()
-        self.socket.send(data)
-        self.wait_for_ack()
-    
+        msg = Message(self.drone.uuid, message=msg).to_bytes()
+        self.socket.sendall(msg)
+
     def close(self):
         self.socket.shutdown(1)
-        
-    def get_message(self, client):
-        try:
-            msg = client.recv(1024)
+                        
+    def wait_message(self, client):
+        message = b''
+        while True:
+            chunk = client.recv(1) 
+            
+            if not chunk:
+                raise RuntimeError("Socket connection broken")
+            
+            if chunk == b'\n':
+                break
+            
+            message += chunk 
 
-            if not msg:
+        return message
+                        
+    def receive_message(self, client):
+        try:
+            message = self.wait_message(client)
+
+            if not message:
                 client.close()
                 return None
 
-            msg = Message(**json.loads(msg))
-            
-            if msg.message:
-                pass
-            
-            return msg
+            message = Message(**json.loads(message))
+            return message
             
         except ConnectionResetError as e:
-            client.close()
-            return None
-
-    def wait_for_ack(self):
-        while True:
-            try:
-                msg = self.get_message(self.socket)
-                if msg.message == 'ack':
-                    return True
-                else:
-                    break
-            except ConnectionResetError as e:
-                self.socket.close()
-                break
+            pass
+        except RuntimeError as e:
+            pass
             
-        return False
+        client.close()
+        return None
+            
+    def listen_client(self, client, address):
+        while True:
+            msg = self.receive_message(client)
+
+            print(address, msg)
+            if not msg and msg.target != self.drone.uuid:
+                break
+
+            self.drone.command_execute(msg.message)
+
     
 if __name__ == "__main__":
     c1 = Client('127.0.0.1', 65432, 'test1')
-
     c1.send('bob')
     c1.send('jens')
-    #c1.listen()
     # time.sleep(2)
-    c1.close()
 
 
