@@ -1,34 +1,38 @@
-from exceptions import NoConnectionError
+import json
+from models.drone_model import DroneModel
 import socket
 import threading
 import time
+from encoders import DroneEncoder
+from exceptions import NoConnectionError
 from commands import ControlCommands, ReadCommands, SetCommands
 from models import PositionModel, StatsModel
 from datetime import datetime
 from enums import StatusEnum
 
-class Drone():
+class DroneController():
     def __init__(self, uuid):
         self.log = []
-        self.uuid = uuid
-        
+        self.drone = DroneModel(uuid, None, None, None, None)
+    
         self.control = ControlCommands(self.send_command)
         self.read = ReadCommands(self.send_command)
         self.set = SetCommands(self.send_command)
         
-        self.commands = self.commands()
-        
+        self.commands = {
+            'update': self.update,
+            'read': self.read.battery
+        }
+     
+        self.initialize()
+
+    def initialize(self):
         self.connect()
         self.activate()
         
         self.update()
         self.print_info()
         
-    def commands(self):
-         return {
-            'update': self.update,
-            'read': self.read.battery
-        }
         
     def command_execute(self, command):
         if command in self.commands:
@@ -37,10 +41,10 @@ class Drone():
         return False
         
     def update(self):
-        self.lastUpdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # self.position = PositionModel(22, 1, 2)
-        # self.battery = self.read.battery()
-        # self.status = self.drone_status()
+        self.drone.lastUpdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.drone.position = PositionModel(22, 1, 2)
+        self.drone.battery = self.read.battery()
+        self.drone.status = self.drone_status()
         
     def drone_status(self):
         return StatusEnum.CHARGING.value
@@ -97,9 +101,8 @@ class Drone():
                 
     def print_info(self):
         print(f'Local ip: {socket.gethostbyname(socket.gethostname())}')
-        print(f'Last update: {self.lastUpdate}')
-        print(f'UUID: {self.uuid}')
-        print(f'Position: {self.position}')
-        print(f'Battery: {self.battery}%')
-        print(f'Status: {StatusEnum.format(self.status)}')
-        
+        print(f'Last update: {self.drone.lastUpdate}')
+        print(f'UUID: {self.drone.uuid}')
+        print(f'Position: {self.drone.position}')
+        print(f'Battery: {self.drone.battery}%')
+        print(f'Status: {StatusEnum.format(self.drone.status)}')

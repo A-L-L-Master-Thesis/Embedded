@@ -1,12 +1,5 @@
 import json
-import struct
-from json import JSONEncoder
-
-
-class Encoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__
-
+from encoders import Encoder
 
 class Message():
     def __init__(self, sender, message, target = "server"):
