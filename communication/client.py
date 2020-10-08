@@ -3,7 +3,6 @@ import time
 import socket
 import threading
 from .message import Message
-from .Command import Command
 
 DRONE_UPDATE_INTERVAL = 10
 
@@ -33,8 +32,7 @@ class Client():
         self.update()
             
     def send(self, command, data):
-        command = Command(command, data)
-        msg = Message(self.drone_controller.drone.uuid, message=command).to_bytes()
+        msg = Message(self.drone_controller.drone.uuid, command=command, data=data).to_bytes()
         self.socket.sendall(msg)
 
     def close(self):

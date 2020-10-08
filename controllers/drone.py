@@ -1,9 +1,7 @@
-import json
-from models.drone_model import DroneModel
 import socket
 import threading
 import time
-from encoders import DroneEncoder
+from models.drone_model import DroneModel
 from exceptions import NoConnectionError
 from commands import ControlCommands, ReadCommands, SetCommands
 from models import PositionModel, StatsModel

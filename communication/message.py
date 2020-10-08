@@ -1,10 +1,11 @@
 import json
 from encoders import Encoder
+from .Command import Command
 
 class Message():
-    def __init__(self, sender, message, target = "server"):
+    def __init__(self, sender, command, data, target = "server"):
         self.sender = sender
-        self.message = message
+        self.message = Command(command, data)
         self.target = target
 
     def to_bytes(self):
