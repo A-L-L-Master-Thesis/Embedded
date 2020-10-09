@@ -12,6 +12,11 @@ class Client():
         self.address = (host, port)
         self.start(host, port)
         self.new_client()
+        self.register()
+        
+    def register(self):
+        self.drone_controller.update()
+        self.send('register', self.drone_controller.drone)
 
     def start(self, host, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
@@ -78,7 +83,7 @@ class Client():
             msg = self.receive_message()
 
             print(self.address, msg)
-            if not msg and msg.target != self.drone_controller.drone.uuid:
+            if not msg or msg.target != self.drone_controller.drone.uuid:
                 break
 
             self.drone_controller.command_execute(msg.message)

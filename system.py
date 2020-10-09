@@ -11,8 +11,7 @@ class System():
         try:
             print(f'DroneOS version {read("version.json", Version).version}')
             self.drone_controller = self.initialize()
-            self.client = Client('localhost', 44444, self.drone_controller)
-            self.register_drone()
+            self.client = Client('85.218.161.148', 44444, self.drone_controller)
             
             # Keeps connection alive
             while True:
@@ -27,9 +26,7 @@ class System():
             return write(uuid_file, DroneController(str(uuid.uuid1())))
         else:
             return read(uuid_file, DroneController)
-        
-    def register_drone(self):
-        self.client.send('register', self.drone_controller.drone)
+
 
 if __name__ == "__main__":
     s = System()
