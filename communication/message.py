@@ -1,5 +1,5 @@
 import json
-from encoders import Encoder
+from encoders import DroneEncoder
 from .Command import Command
 
 class Message():
@@ -9,7 +9,7 @@ class Message():
         self.target = target
 
     def to_bytes(self):
-        data = json.dumps(self, cls=Encoder)
+        data = json.dumps(self, cls=DroneEncoder)
         return f'{data}\n'.encode('utf-8')
     
     def __str__(self) -> str:

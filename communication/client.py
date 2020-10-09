@@ -87,6 +87,7 @@ class Client():
         
     def update_drone(self):
         while True:
+            self.drone_controller.update()
             self.send('update', self.drone_controller.drone)
             time.sleep(DRONE_UPDATE_INTERVAL)
 
