@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/HCI901E20/P9-Embedded/compare/v1.1.0...v1.2.0) (2020-10-13)
+
+
+### Features
+
+* Drone update information ([7f3fcda](https://github.com/HCI901E20/P9-Embedded/commit/7f3fcdaa50bc0581f40455cb0b21d309b1780170))
+
+
+### Bug Fixes
+
+* breaking connection ([92a29e1](https://github.com/HCI901E20/P9-Embedded/commit/92a29e185a94cb05f7e3d18df5ae2aab525b05ed))
+* update drone ([d55f181](https://github.com/HCI901E20/P9-Embedded/commit/d55f1814d4f99de573aebaad746d8cbae95bd0c5))
+* **CI:** remove dev ([8f53739](https://github.com/HCI901E20/P9-Embedded/commit/8f53739e6d74789a8363f7d6ab908f97abae4465))
+
 ## [1.1.0](https://github.com/HCI901E20/P9-Embedded/compare/v1.1.0-dev.0...v1.1.0) (2020-10-07)
 
 ## 1.1.0-dev.0 (2020-10-07)
