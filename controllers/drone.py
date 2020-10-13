@@ -26,8 +26,8 @@ class DroneController():
         self.initialize()
 
     def initialize(self):
-        self.connect()
-        self.activate()
+        # self.connect()
+        # self.activate()
         
         self.update()
         self.print_info()
@@ -42,7 +42,7 @@ class DroneController():
     def update(self):
         self.drone.lastUpdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.drone.position = GpsController.get_coordinates()
-        self.drone.battery = self.read.battery()
+        # self.drone.battery = self.read.battery()
         self.drone.status = self.drone_status()
         
     def drone_status(self):
