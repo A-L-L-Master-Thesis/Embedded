@@ -11,7 +11,7 @@ class System():
         try:
             print(f'DroneOS version {read("version.json", Version).version}')
             self.drone_controller = self.initialize()
-            self.client = Client('85.218.161.148', 44444, self.drone_controller)
+            # self.client = Client('85.218.161.148', 44444, self.drone_controller)
             
             # Keeps connection alive
             while True:
