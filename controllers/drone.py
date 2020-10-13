@@ -7,6 +7,7 @@ from commands import ControlCommands, ReadCommands, SetCommands
 from models import PositionModel, StatsModel
 from datetime import datetime
 from enums import StatusEnum
+from .gps import GpsController
 
 class DroneController():
     def __init__(self, uuid):
@@ -40,7 +41,7 @@ class DroneController():
         
     def update(self):
         self.drone.lastUpdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.drone.position = PositionModel(22, 1, 2)
+        self.drone.position = GpsController.get_coordinates()
         self.drone.battery = self.read.battery()
         self.drone.status = self.drone_status()
         
