@@ -14,6 +14,8 @@ class DroneController():
         self.log = []
         self.drone = DroneModel(uuid, None, None, None, None)
     
+        self.home = GpsController.get_coordinates()
+
         self.control = ControlCommands(self.send_command)
         self.read = ReadCommands(self.send_command)
         self.set = SetCommands(self.send_command)
@@ -28,6 +30,9 @@ class DroneController():
     def initialize(self):
         self.connect()
         self.activate()
+
+        # Battery monitor
+        threading.Thread(target=self.battery_monitor).start
         
         self.update()
         self.print_info()
@@ -105,3 +110,15 @@ class DroneController():
         print(f'Position: {self.drone.position}')
         print(f'Battery: {self.drone.battery}%')
         print(f'Status: {StatusEnum.format(self.drone.status)}')
+
+    def battery_monitor(self):
+        while True:
+            level = self.read.battery
+            if 15 < level < 20:
+                # TODO Send battery warning to backend
+                pass
+            if level < 15:
+                # Return home
+                self.control.land()
+                pass
+            time.sleep(10)
