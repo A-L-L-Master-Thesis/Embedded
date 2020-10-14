@@ -116,6 +116,7 @@ class DroneController():
             level = self.read.battery
             if 15 < level < 20:
                 # TODO Send battery warning to backend
+                print('\n\n===================================\n\nBattery Low\n\n===================================\n\n')
                 pass
             if level < 15:
                 # Return home
