@@ -4,7 +4,7 @@ from controllers import DroneController
 from handlers import write, read
 from communication import Client
 from exceptions import NoConnectionError
-from models import Version
+from models import Version, DroneModel
 
 class System():
     def __init__(self):
@@ -23,9 +23,9 @@ class System():
         uuid_file = os.path.join(os.getcwd(), 'drone_info.json')
         
         if not os.path.exists(uuid_file):
-            return write(uuid_file, DroneController(str(uuid.uuid1())))
+            return DroneController(write(uuid_file, DroneModel(str(uuid.uuid1()))))
         else:
-            return read(uuid_file, DroneController)
+            return DroneController(read(uuid_file, DroneModel))
 
 
 if __name__ == "__main__":

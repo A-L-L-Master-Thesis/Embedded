@@ -10,9 +10,9 @@ from enums import StatusEnum
 from .gps import GpsController
 
 class DroneController():
-    def __init__(self, uuid):
+    def __init__(self, drone):
         self.log = []
-        self.drone = DroneModel(uuid, None, None, None, None)
+        self.drone = drone
     
         self.home = GpsController.get_coordinates()
 
