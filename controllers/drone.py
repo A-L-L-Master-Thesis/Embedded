@@ -87,7 +87,7 @@ class DroneController():
         while not self.log[-1].response:
             if _time_difference(start) > self.MAX_TIME_OUT:
                 self.log.append(f'Max timeout exceeded... command: {command}')
-                return None
+                raise NoConnectionError
             
         return self.log[-1].response.decode('utf-8').rstrip("\r\n")
             
