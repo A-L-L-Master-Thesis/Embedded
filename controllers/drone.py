@@ -32,7 +32,7 @@ class DroneController():
         self.activate()
 
         # Battery monitor
-        threading.Thread(target=self.battery_monitor).start
+        threading.Thread(target=self.battery_monitor).start()
         
         self.update()
         self.print_info()
@@ -113,13 +113,14 @@ class DroneController():
 
     def battery_monitor(self):
         while True:
-            level = self.read.battery
+            level = self.read.battery()
             if 15 < level < 20:
                 # TODO Send battery warning to backend
                 print('\n\n===================================\n\nBattery Low\n\n===================================\n\n')
                 pass
             if level < 15:
                 # Return home
+                print('\n\n===================================\n\nBattery VERY Low !!!!\n\n===================================\n\n')
                 self.control.land()
                 pass
             time.sleep(10)

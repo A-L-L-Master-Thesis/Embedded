@@ -7,19 +7,19 @@ class ReadCommands():
         description: get current speed (cm/s)
         response: int 1 - 100
         """
-        return self.command(f'speed?')
+        return int(self.command(f'speed?'))
         
     def battery(self):
         """
         description: get current battery percentage
         response: int 1 - 100
         """
-        return self.command(f'battery?')
+        return int(self.command(f'battery?'))
         
     def time(self):
         """
         description: get current fly time (s) 
-        response: time
+        response: string time
         """
         return self.command(f'time?')
         
@@ -28,14 +28,14 @@ class ReadCommands():
         description: get height (cm)
         response: int 0 - 3000
         """
-        return self.command(f'height?')
+        return int(self.command(f'height?'))
         
     def temp(self):
         """
         description: get temperature (℃)
         response: int 0 - 90
         """
-        return self.command(f'temp?')
+        return int(self.command(f'temp?'))
         
     def attitude(self):
         """
@@ -49,7 +49,7 @@ class ReadCommands():
         description: get barometer value (m) 
         response: int
         """
-        return self.command(f'baro?')
+        return int(self.command(f'baro?'))
         
     def acceleration(self):
         """
@@ -63,7 +63,7 @@ class ReadCommands():
         description: get distance value from TOF（cm）
         response: x: 30-1000
         """
-        return self.command(f'tof?')
+        return int(self.command(f'tof?'))
         
     def wifi(self):
         """
