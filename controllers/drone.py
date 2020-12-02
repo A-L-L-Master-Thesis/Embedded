@@ -20,7 +20,8 @@ class DroneController():
         
         self.commands = {
             'update': self.update,
-            'read': self.read.battery
+            'read': self.read.battery,
+            'launch': self.control.takeoff,
         }
      
         self.initialize()
