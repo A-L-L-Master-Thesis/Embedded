@@ -11,12 +11,13 @@ class Client():
         self.drone_controller = drone_controller
         self.address = (host, port)
         self.start(host, port)
-        self.new_client()
         self.register()
         
     def register(self):
         self.drone_controller.update()
         self.send('register', self.drone_controller.drone)
+        sleep(10)
+        self.new_client()
 
     def start(self, host, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
