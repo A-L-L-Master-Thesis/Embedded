@@ -1,5 +1,6 @@
 import json
 import time
+import sys
 import socket
 import threading
 from .message import Message
@@ -13,11 +14,17 @@ class Client():
         self.start(host, port)
         self.register()
         
+        
     def register(self):
         self.drone_controller.update()
         self.send('register', self.drone_controller.drone)
-        sleep(10)
+        msg = self.receive_message()
+        if msg.message.command.command != 'Ack':
+            print('Server registration falied')
+            sys.exit(1)
         self.new_client()
+
+        
 
     def start(self, host, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
