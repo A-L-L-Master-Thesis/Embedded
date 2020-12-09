@@ -19,11 +19,11 @@ class Client():
         self.drone_controller.update()
         self.send('register', self.drone_controller.drone)
         msg = self.receive_message()
-        if msg.message.command.command != 'Ack':
-            print('Server registration falied')
-            sys.exit(1)
-        self.new_client()
+        if msg.message.command != 'Ack':
+            print('Error in registering with server, wrong response recived')
+            sys.exit(-1)
 
+        self.new_client()
         
 
     def start(self, host, port):
@@ -45,7 +45,7 @@ class Client():
         self.update()
             
     def send(self, command, data):
-        msg = Message(self.drone_controller.drone.uuid, command=command, data=data).to_bytes()
+        msg = Message(self.drone_controller.drone.uuid, message={'command': command,'data': data}).to_bytes()
         self.socket.sendall(msg)
 
     def close(self):
@@ -73,7 +73,6 @@ class Client():
             if not message:
                 self.socket.close()
                 return None
-
             message = Message(**json.loads(message))
             return message
             
@@ -90,7 +89,7 @@ class Client():
         while True:
             msg = self.receive_message()
 
-            print(self.address, msg)
+            print(self.address, msg.message)
             if not msg or msg.target != self.drone_controller.drone.uuid:
                 break
 

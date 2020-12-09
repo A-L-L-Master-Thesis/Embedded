@@ -7,12 +7,12 @@ from commands import ControlCommands, ReadCommands, SetCommands
 from models import PositionModel, StatsModel
 from datetime import datetime
 from enums import StatusEnum
-from .gps import GpsController
+#from .gps import GpsController
 
 class DroneController():
     def __init__(self, uuid):
         self.log = []
-        self.drone = DroneModel(uuid, None, None, None, None)
+        self.drone = DroneModel(uuid, None, None, None, StatusEnum.IDLE.value)
     
         self.control = ControlCommands(self.send_command)
         self.read = ReadCommands(self.send_command)
@@ -21,10 +21,28 @@ class DroneController():
         self.commands = {
             'update': self.update,
             'read': self.read.battery,
-            'launch': self.control.takeoff,
+            'launch': self.launch,
+            'abort': self.abort,
         }
      
         self.initialize()
+
+    def launch(self):
+        self.change_status(StatusEnum.LAUNCHING)
+        #res = self.control.takeoff()
+        #if res != 'ok':
+        #    self.change_status(StatusEnum.ERROR)
+
+    def abort(self):
+        self.change_status(StatusEnum.RETURNING)
+        #TODO Return Home
+        self.change_status(StatusEnum.LANDING)
+        #self.control.land()
+        #if res != 'ok':
+        #    self.change_status(StatusEnum.ERROR)
+        time.sleep(10)
+        self.change_status(StatusEnum.IDLE)
+
 
     def initialize(self):
         # self.connect()
@@ -34,7 +52,9 @@ class DroneController():
         self.print_info()
         
         
-    def command_execute(self, command):
+    def command_execute(self, message):
+        command = message.command
+
         if command in self.commands:
             self.commands[command]()
             return True
@@ -47,7 +67,11 @@ class DroneController():
         self.drone.status = self.drone_status()
         
     def drone_status(self):
-        return StatusEnum.CHARGING.value
+        return self.drone.status
+
+    def change_status(self, status):
+        self.drone.status = status.value
+        self.update
     
     def connect(self):
         # Socket for sending command
