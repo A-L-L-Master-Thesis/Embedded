@@ -7,7 +7,7 @@ from commands import ControlCommands, ReadCommands, SetCommands
 from models import PositionModel, StatsModel
 from datetime import datetime
 from enums import StatusEnum
-#from .gps import GpsController
+from .gps import GpsController
 
 class DroneController():
     def __init__(self, uuid):
@@ -29,24 +29,24 @@ class DroneController():
 
     def launch(self):
         self.change_status(StatusEnum.LAUNCHING)
-        #res = self.control.takeoff()
-        #if res != 'ok':
-        #    self.change_status(StatusEnum.ERROR)
+        res = self.control.takeoff()
+        if res != 'ok':
+            self.change_status(StatusEnum.ERROR)
 
     def abort(self):
         self.change_status(StatusEnum.RETURNING)
         #TODO Return Home
         self.change_status(StatusEnum.LANDING)
-        #self.control.land()
-        #if res != 'ok':
-        #    self.change_status(StatusEnum.ERROR)
+        self.control.land()
+        if res != 'ok':
+            self.change_status(StatusEnum.ERROR)
         time.sleep(10)
         self.change_status(StatusEnum.IDLE)
 
 
     def initialize(self):
-        # self.connect()
-        #self.activate()
+        self.connect()
+        self.activate()
         
         self.update()
         self.print_info()
@@ -62,8 +62,8 @@ class DroneController():
         
     def update(self):
         self.drone.lastUpdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.drone.position = PositionModel(100,57.053992,9.923754) #GpsController.get_coordinates()
-        self.drone.battery = 100 #self.read.battery()
+        self.drone.position = GpsController.get_coordinates() # PositionModel(100,57.053992,9.923754)
+        self.drone.battery = self.read.battery()
         self.drone.status = self.drone_status()
         
     def drone_status(self):
